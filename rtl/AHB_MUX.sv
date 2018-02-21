@@ -1,10 +1,12 @@
-module AMBA_MUX (
-input logic slave_SEL, 
-input logic [33:0] slave_0_cd, slave_1_cd,
-output logic [33:0] slave_cd);
+import Definitions::*;
+module AMBA_MUX
+ (
+input logic MUX_SEL, 
+input  Slave_t slave_0, slave_1,
+output Slave_t mux_out);
 
 always_comb begin
-	slave_cd = slave_SEL ? slave_1_cd : slave_0_cd ;
+	mux_out= MUX_SEL ? slave_1 : slave_0 ;
 	end
 endmodule
 
