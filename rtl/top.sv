@@ -1,0 +1,73 @@
+module AHB_top ;
+
+logic HSEL0, HSEL1, slave_SEL,
+logic [31:0] HADDR,
+logic HWRITE, HMASTLOCK, HREADY,
+logic [1:0] HTRANS,
+logic [2:0] HSIZE, HBURST,
+logic [3:0] HPROT,
+logic [31:0] HRDATA,
+logic HRESP, HREADYOUT,
+logic [31:0] HRDATA0,
+logic HRESP0, HREADYOUT0,
+logic [31:0] HRDATA1,
+logic HRESP1, HREADYOUT1,
+logic HRESETn, HCLK;
+
+AHB_MASTER M1 (
+	.HRESP(HRESP),
+	.HREADY(HREADY),
+	.HRESETn(HRESETn),
+	.HCLK(HCLK),
+	.HRDATA(HRDATA),
+	.HADDR(HADDR),
+	.HWRITE(HWRITE), 
+	.HMASTLOCK(HMASTLOCK), 
+	.HREADY(HREADY),
+	.HTRANS(HTRANS),
+	.HSIZE(HSIZE),
+	.HBURST(HBURST),
+	.HPROT(HPROT)
+	.HWDATA(HWDATA));
+AHB_SLAVE S0 (
+	.HADDR(HADDR),
+        .HWRITE(HWRITE), 
+        .HMASTLOCK(HMASTLOCK), 
+        .HREADY(HREADY),
+        .HTRANS(HTRANS),
+        .HSIZE(HSIZE),
+        .HBURST(HBURST),
+        .HPROT(HPROT),
+        .HRESETn(HRESETn),
+	.HWDATA(HWDATA),
+	.HSEL(HSEL0),
+        .HCLK(HCLK),
+	.HREADYOUT(HREADYOUT0),
+	.HRESP(HRESP0),
+	.HRDATA(HRDATA0));
+AHB_SLAVE S1 (
+        .HADDR(HADDR),
+        .HWRITE(HWRITE),
+        .HMASTLOCK(HMASTLOCK), 
+        .HREADY(HREADY),
+        .HTRANS(HTRANS),
+        .HSIZE(HSIZE),
+        .HBURST(HBURST),
+        .HPROT(HPROT),
+        .HRESETn(HRESETn),
+        .HWDATA(HWDATA),
+        .HSEL(HSEL1),
+        .HCLK(HCLK),
+        .HREADYOUT(HREADYOUT1),
+        .HRESP(HRESP1),
+        .HRDATA(HRDATA1));
+AHB_DECODER D1 (
+	.msb_address(HADDR[31]),
+	.HSEL0(HSEL0),
+	.HSEL1(HSEL1),
+	.slave_SEL(slave_SEL));
+AHB_MUX M1 (
+	.slave_SEL(slave_SEL),
+	.slave_0_cd({HREADYOUT0,HRESP0,HRDATA0}),
+	.slave_1_cd({HREADYOUT1,HRESP1,HRDATA1}),
+	.slave_cd({HREADYOUT,HRESP,HRDATA}));
