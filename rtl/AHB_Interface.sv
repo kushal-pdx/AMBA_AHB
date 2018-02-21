@@ -13,10 +13,10 @@
 
 interface Hbus (input logic HCLK, HRESETn);
 	
-	logic [DATAWIDTH-1:0] HWDATA;      // Write Data signal from Master to Slaves
-	logic [DATAWIDTH-1:0] HRDATA;      // Read Data signal from Multiplexer to Master
-	logic [ADDRWIDTH-1:0] HADDR;       // Address Signal from Master to slaves & Decoder
- 
+	logic [DATAWIDTH-1:0]   HWDATA;      // Write Data signal from Master to Slaves
+	logic [DATAWIDTH-1:0]   HRDATA;      // Read Data signal from Multiplexer to Master
+	logic [ADDRWIDTH-1:0]   HADDR;       // Address Signal from Master to slaves & Decoder
+	logic [Trans_Width-1:0] HTRANS;      // Tranfer_Type signal with information of transfer_type like IDLE, BUSY, NONSEQ, SEQ 
 	
 endinterface
 
